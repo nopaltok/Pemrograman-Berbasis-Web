@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Form Input Nilai</title>
+  <style>
+
+    * { box-sizing: border-box; font-family: "Georgia", "Times New Roman", serif; }
+    body { margin: 0; padding: 0; background: #f6f7f8; color: #222; }
+    .wrapper { max-width: 920px; margin: 32px auto; padding: 18px; background: #fff; border: 1px solid #cfcfcf; }
+    h1 { margin: 0 0 14px 0; font-size: 34px; color: #333; }
+
+
+    .form-box { border: 23px solid #cfcfcf; padding: 12px; margin-bottom: 18px; background: #fafafa; }
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 30px 1fr;
+      gap: 8px;
+      align-items: center;
+    }
+    .label { padding-left: 8px; font-weight: 600; }
+    .colon { text-align: center; color: #666; }
+    input[type="text"], input[type="number"] {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid #c7c7c7;
+      border-radius: 3px;
+      background: #fff;
+      font-size: 14px;
+    }
+    .btn-row { text-align: center; margin-top: 12px; }
+    button.save {
+      padding: 6px 14px;
+      border: 1px solid #9aa;
+      background: #eee;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button.save:hover { background: #e0e8ff; }
+
+    /* Table styles */
+    table.main-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      background: #fff;
+    }
+    table.main-table thead th {
+      border: 1px solid #bfbfbf;
+      padding: 10px;
+      background: #f4f4f4;
+      text-align: left;
+    }
+    table.main-table td {
+      border: 1px solid #d0d0d0;
+      padding: 10px;
+      vertical-align: middle;
+      text-align: left;
+    }
+    table.main-table .center { text-align: center; }
+/
+    .nilai-header { text-align: center; }
+
+    /* Footer blue bar */
+    .footer-bar {
+      height: 36px;
+      background: #183f9a;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 18px;
+      font-weight: 700;
+      letter-spacing: .4px;
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .form-grid { grid-template-columns: 1fr; }
+      .colon { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <h1>Form Input Nilai</h1>
+
+    <div class="form-box">
+      <form id="nilaiForm" onsubmit="return handleSubmit(event);">
+        <div class="form-grid">
+          <div class="label">NIM</div>
+          <div class="colon">:</div>
+          <div><input type="text" id="nim" placeholder="Silakan isi NIM" required></div>
+
+          <div class="label">Nilai Tugas</div>
+          <div class="colon">:</div>
+          <div><input type="number" id="tugas" placeholder="Silakan isi nilai tugas" min="0" max="100" required></div>
+
+          <div class="label">Nilai UTS</div>
+          <div class="colon">:</div>
+          <div><input type="number" id="uts" placeholder="Silakan isi nilai uts" min="0" max="100" required></div>
+
+          <div class="label">Nilai UAS</div>
+          <div class="colon">:</div>
+          <div><input type="number" id="uas" placeholder="Silakan isi nilai uas" min="0" max="100" required></div>
+        </div>
+
+        <div class="btn-row">
+          <button type="submit" class="save">Simpan</button>
+        </div>
+      </form>
+    </div>
+
+
+    <table class="main-table" id="dataTable" aria-label="Tabel nilai mahasiswa">
+      <thead>
+        <tr>
+          <th style="width:48px">No</th>
+          <th style="width:220px">NIM</th>
+          <th>Nama</th>
+          <th colspan="3" class="nilai-header">Nilai</th>
+        </tr>
+        <tr>
+
+          <th></th><th></th><th></th>
+          <th class="center" style="width:90px">Tugas</th>
+          <th class="center" style="width:90px">UTS</th>
+          <th class="center" style="width:90px">UAS</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody">
+     
+        <tr>
+          <td class="center">1</td>
+          <td>A11.2023.123125</td>
+          <td>Sintiya</td>
+          <td class="center">60</td>
+          <td class="center">76</td>
+          <td class="center">90</td>
+        </tr>
+        <tr>
+          <td class="center">2</td>
+          <td>A11.2023.12376</td>
+          <td>caca</td>
+          <td class="center">76</td>
+          <td class="center">88</td>
+          <td class="center">60</td>
+        </tr>
+        <tr>
+          <td class="center">3</td>
+          <td>A11.2023.12147</td>
+          <td>nopol</td>
+          <td class="center">96</td>
+          <td class="center">78</td>
+          <td class="center">75</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="footer-bar">Sarjana Teknik Informatika</div>
+  </div>
+
+  <script>
+    
+    function handleSubmit(e) {
+      e.preventDefault();
+      const nim = document.getElementById('nim').value.trim();
+      const tugas = document.getElementById('tugas').value.trim();
+      const uts = document.getElementById('uts').value.trim();
+      const uas = document.getElementById('uas').value.trim();
+
+      // Validasi sederhana
+      if (!nim) { alert('Isi NIM terlebih dahulu'); return false; }
+      const numbers = [tugas, uts, uas].map(v => Number(v));
+      if (numbers.some(v => isNaN(v) || v < 0 || v > 100)) {
+        alert('Nilai harus berupa angka antara 0 dan 100.');
+        return false;
+      }
+
+      addRowToTable(nim, '-', numbers[0], numbers[1], numbers[2]);
+      document.getElementById('nilaiForm').reset();
+      return false;
+    }
+
+    function addRowToTable(nim, nama, tugas, uts, uas) {
+      const tbody = document.getElementById('tableBody');
+      const rowCount = tbody.rows.length;
+      const tr = document.createElement('tr');
+
+      const tdNo = document.createElement('td');
+      tdNo.className = 'center';
+      tdNo.textContent = rowCount + 1;
+
+      const tdNim = document.createElement('td');
+      tdNim.textContent = nim;
+
+      const tdNama = document.createElement('td');
+      tdNama.textContent = nama || '-';
+
+      const tdTugas = document.createElement('td');
+      tdTugas.className = 'center';
+      tdTugas.textContent = tugas;
+
+      const tdUts = document.createElement('td');
+      tdUts.className = 'center';
+      tdUts.textContent = uts;
+
+      const tdUas = document.createElement('td');
+      tdUas.className = 'center';
+      tdUas.textContent = uas;
+
+      tr.appendChild(tdNo);
+      tr.appendChild(tdNim);
+      tr.appendChild(tdNama);
+      tr.appendChild(tdTugas);
+      tr.appendChild(tdUts);
+      tr.appendChild(tdUas);
+      tbody.appendChild(tr);
+    }
+
+    
+  </script>
+</body>
+</html>
